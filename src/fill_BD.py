@@ -2,16 +2,10 @@ import psycopg2
 from src.API import get_vacancies
 
 
-def fill_tables(employer_ids):
+def fill_tables(employer_ids, params):
     """Заполняет таблицы"""
-    conn = psycopg2.connect(
-        dbname="123",
-        user="postgres",
-        password="Qwer951753",
-        host="localhost",
-        port="5432"
-    )
-
+    conn = psycopg2.connect(**params)
+    conn.autocommit = True
     cur = conn.cursor()
 
     for employer_id in employer_ids:

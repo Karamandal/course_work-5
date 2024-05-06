@@ -1,17 +1,12 @@
 import psycopg2
 
 
-def create_tables():
-    """Создаёт таблицы"""
-    conn = psycopg2.connect(
-        dbname="123",
-        user="postgres",
-        password="Qwer951753",
-        host="localhost",
-        port="5432"
-    )
-
+def create_tables(params):
+    """Создание БД и таблиц для сохранения данных о команиях и их вакансиях"""
+    conn = psycopg2.connect(**params)
+    conn.autocommit = True
     cur = conn.cursor()
+
     """Удаление таблиц перед созданием"""
     cur.execute("DROP TABLE IF EXISTS employers CASCADE")
     cur.execute("DROP TABLE IF EXISTS vacancies CASCADE")

@@ -4,24 +4,24 @@ from src.config import config
 
 class DBManager:
     def __init__(self):
-        self.db_name = 'HH'
+        self.params_db = config()
 
-    def execute_(self, query):
-        conn = psycopg2.connect(dbname=self.db_name, **config())
+    def execute_(self, params):
+        conn = psycopg2.connect(**self.params_db)
         with conn:
             with conn.cursor() as cur:
-                cur.execute(query)
+                cur.execute(params)
                 results = cur.fetchall()
         conn.close()
         return results
 
     def get_companies_and_vacancies_count(self):
         """Получает список всех компаний и количество вакансий у каждой компании."""
-        result = self.execute_(f'SELECT companies.company_id, vacancies.company_name,'
-                               f' COUNT(company_name) AS "Количество вакансий" '
-                               f'FROM companies INNER JOIN vacancies '
+        result = self.execute_(f'SELECT employers.company_id, vacancies.company_name,'
+                               f'COUNT(company_name) AS "Количество вакансий" '
+                               f'FROM employers INNER JOIN vacancies '
                                f'USING (company_name) '
-                               f'GROUP BY companies.company_id, vacancies.company_name '
+                               f'GROUP BY employers.company_id, vacancies.company_name '
                                f'ORDER BY company_id')
         return result
 
